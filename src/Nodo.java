@@ -34,5 +34,10 @@ public class Nodo {
 	public Integer getNome() {
 		return nome;
 	}
+	
+	@Override
+	public String toString() {
+		return this.getNome().toString();
+	}
 
 }

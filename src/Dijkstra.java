@@ -37,7 +37,7 @@ public class Dijkstra {
 			}
 		}
 	}
-
+	
 	private Nodo removeMenor(LinkedList<Nodo> Q) {
 		int menor = INFINITY;
 		Nodo menorNodo = null;
@@ -54,5 +54,21 @@ public class Dijkstra {
 	
 	public int[] dist() {
 		return dist;
+	}
+	
+	public LinkedList<Integer> retornaCaminho(int u, int v) throws Exception{
+		LinkedList<Integer> caminho = new LinkedList<>();
+		
+		int localV = v;
+		while(pai[localV] != u){
+			if(pai[localV] == NIL){
+				throw new Exception("Não existe esse caminho... ["+u+" -> "+v+"]");
+			}
+			caminho.addFirst(pai[localV]);
+			localV = pai[localV];
+		}
+		caminho.addFirst(u);
+		caminho.addLast(v);
+		return caminho;
 	}
 }

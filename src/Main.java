@@ -1,11 +1,13 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
+	public static void main(String[] args) throws Exception {
+		//Scanner scanner = new Scanner(System.in);
+		Scanner arquivoScanner = new Scanner(new File("arestas.txt"));
 
 		System.out.println("Quantos vértices serão utilizados no total? Digite:");
-		int qtdVertices = Integer.parseInt(scanner.nextLine());
+		int qtdVertices = Integer.parseInt(arquivoScanner.nextLine());
 
 		System.out.println("Abaixo digite as arestas que o grafo irá conter:");
 		System.out.println("deve seguir o seguinte formato: [verticeOrigem verticeDestino valorAresta]");
@@ -15,7 +17,8 @@ public class Main {
 		while (true) {
 			System.out.println("Digite uma aresta: [0 0 0 para finalizar]");
 
-			String[] numeros = scanner.nextLine().split(" ");
+			//String[] numeros = scanner.nextLine().split(" ");
+			String[] numeros = arquivoScanner.nextLine().split(" ");
 			int origem = Integer.parseInt(numeros[0]);
 			int destino = Integer.parseInt(numeros[1]);
 			int valor = Integer.parseInt(numeros[2]);
@@ -28,6 +31,7 @@ public class Main {
 
 		grafo.carteiroChines();
 		
-		scanner.close();
+		arquivoScanner.close();
+		//scanner.close();
 	}
 }

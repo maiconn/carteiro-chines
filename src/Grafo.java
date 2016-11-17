@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,45 +37,47 @@ public class Grafo {
 		destino.adicionarFilho(origem, valor);
 	}
 
-	public void carteiroChines() {
+	public void carteiroChines() throws Exception {
 		List<Nodo> impares = getImpares();
 		Map<Nodo, Dijkstra> dijkstras = new HashMap<>();
-		
-		for(Nodo nodo : impares){
+
+		for (Nodo nodo : impares) {
 			dijkstras.put(nodo, new Dijkstra(this, nodo.getNome()));
 		}
 		
-		while(!dijkstras.isEmpty()){
+		while (!dijkstras.isEmpty()) {
 			int menor = Integer.MAX_VALUE;
 			Nodo pai = null;
 			Nodo filh = null;
-			Dijkstra menorDijkstraPai = null;
-			Dijkstra menorDijkstraFilho = null;
-			for(Nodo nodo : dijkstras.keySet()){
-				for(Nodo filho : dijkstras.keySet()){
-					if(nodo.getNome() != filho.getNome()){
+			for (Nodo nodo : dijkstras.keySet()) {
+				for (Nodo filho : dijkstras.keySet()) {
+					if (nodo.getNome() != filho.getNome()) {
 						Dijkstra dijkstra = dijkstras.get(filho);
 						int val = dijkstra.dist()[nodo.getNome()];
-						if(val < menor){
+						if (val < menor) {
 							menor = val;
 							pai = nodo;
 							filh = filho;
-							menorDijkstraPai = dijkstras.get(nodo);
-							menorDijkstraFilho = dijkstra;
 						}
 					}
-				}	
+				}
 			}
-			
-			
-			//eulerizar criando arestas artificiais...
-			
 
-			dijkstras.remove(menorDijkstraPai);
-			dijkstras.remove(menorDijkstraFilho);
-		}		
+			// eulerizar criando arestas artificiais...
+			LinkedList<Integer> caminho = dijkstras.get(pai).retornaCaminho(pai.getNome(), filh.getNome());
+			int u = caminho.removeFirst();
+			int v = caminho.removeFirst();
+			this.criarAresta(u, v, this.getNodo(u).getValorAresta(this.getNodo(v)));
+			while (!caminho.isEmpty()) {
+				u = v;
+				v = caminho.removeFirst();
+				this.criarAresta(u, v, this.getNodo(u).getValorAresta(this.getNodo(v)));
+			}
+
+			dijkstras.remove(pai);
+			dijkstras.remove(filh);
+		}
 	}
-
 
 	public List<Nodo> getImpares() {
 		List<Nodo> impares = new ArrayList<>();
