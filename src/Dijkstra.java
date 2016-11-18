@@ -12,32 +12,34 @@ public class Dijkstra {
 		this.executarAlgoritmo(origem);
 	}
 
-	private void executarAlgoritmo(int origem){
+	private void executarAlgoritmo(int origem) {
 		LinkedList<Nodo> Q = new LinkedList<Nodo>();
-		
+
 		dist = new int[grafo.getQtdNodos()];
 		pai = new int[grafo.getQtdNodos()];
-		for(int i = 0; i < grafo.getQtdNodos() ; i++){
+		for (int i = 0; i < grafo.getQtdNodos(); i++) {
 			dist[i] = INFINITY;
 			pai[i] = NIL;
 			Q.push(grafo.getNodo(i));
 		}
-		
+
 		dist[origem] = 0;
-		
-		while(!Q.isEmpty()){
+
+		while (!Q.isEmpty()) {
 			Nodo u = removeMenor(Q);
-			
-			for(Nodo v : u.getFilhos()){
-				int alt = dist[u.getNome()] + u.getValorAresta(v);
-				if(alt < dist[v.getNome()]){
-					dist[v.getNome()] = alt;
-					pai[v.getNome()] = u.getNome();
+
+			for (Nodo v : u.getFilhos()) {
+				for (Aresta a : grafo.getArestas(u, v)) {
+					int alt = dist[u.getNome()] + a.getValor();
+					if (alt < dist[v.getNome()]) {
+						dist[v.getNome()] = alt;
+						pai[v.getNome()] = u.getNome();
+					}
 				}
 			}
 		}
 	}
-	
+
 	private Nodo removeMenor(LinkedList<Nodo> Q) {
 		int menor = INFINITY;
 		Nodo menorNodo = null;
@@ -51,18 +53,18 @@ public class Dijkstra {
 
 		return menorNodo;
 	}
-	
+
 	public int[] dist() {
 		return dist;
 	}
-	
-	public LinkedList<Integer> retornaCaminho(int u, int v) throws Exception{
+
+	public LinkedList<Integer> retornaCaminho(int u, int v) throws Exception {
 		LinkedList<Integer> caminho = new LinkedList<>();
-		
+
 		int localV = v;
-		while(pai[localV] != u){
-			if(pai[localV] == NIL){
-				throw new Exception("Não existe esse caminho... ["+u+" -> "+v+"]");
+		while (pai[localV] != u) {
+			if (pai[localV] == NIL) {
+				throw new Exception("Não existe esse caminho... [" + u + " -> " + v + "]");
 			}
 			caminho.addFirst(pai[localV]);
 			localV = pai[localV];
