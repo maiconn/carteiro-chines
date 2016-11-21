@@ -1,29 +1,24 @@
 import java.io.File;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Maicon Machado Gerardi da Silva
+ * @author Débora Missiaggia Ghilardi
+ *
+ */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		Scanner scanner = new Scanner(System.in);
-
 		System.out.println("-- Programa para eulerizar um grafo e imprimir o ciclo euleriano --");
-		System.out.println("Deseja utilizar o exemplo do trabalho ou criar um novo grafo?");
-		System.out.println("Digite 1 para exemplo pronto ou 2 para criar um novo grafo");
-		int opcao = Integer.parseInt(scanner.nextLine());
-		if (opcao == 1) {
-			scanner = new Scanner(new File("arestas.txt"));
-		} 
+		System.out.println("Para este programa foi utilizado o grafo exemplo do trabalho... (conforme grafo.png nesse projeto)");
+		System.out.println("");
 
-		System.out.println("Quantos vértices serão utilizados no total? Digite:");
+		Scanner scanner = new Scanner(new File("arestas.txt"));
+
 		int qtdVertices = Integer.parseInt(scanner.nextLine());
-
-		System.out.println("Abaixo digite as arestas que o grafo irá conter:");
-		System.out.println("deve seguir o seguinte formato: [verticeOrigem verticeDestino valorAresta]");
-		System.out.println("exemplo: 1 2 10");
 
 		Grafo grafo = new Grafo(qtdVertices);
 		while (true) {
-			System.out.println("Digite uma aresta: [0 0 0 para finalizar]");
-
 			String[] numeros = scanner.nextLine().split(" ");
 			int origem = Integer.parseInt(numeros[0]);
 			int destino = Integer.parseInt(numeros[1]);
@@ -35,6 +30,7 @@ public class Main {
 			grafo.criarAresta(origem, destino, valor);
 		}
 
+		System.out.println("Resultado:");
 		grafo.carteiroChines();
 
 		scanner.close();
